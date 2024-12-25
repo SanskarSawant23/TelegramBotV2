@@ -39,8 +39,7 @@ bot.onText(/\/help/, (msg)=>{
       - <code>/dailyupdate</code> - Submit your daily update
       - <code>/leave</code> - Mark yourself as on leave
       - <code>/help</code> - Display this help message
-      - <code>/addtask</code> - Add tasks 
-      - <code>/list</code> - List all your tasks
+      - <code>/feedback</code> - Used to give feedback
 
       <i>Type any command to get started!</i>`;
     
