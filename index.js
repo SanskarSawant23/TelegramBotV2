@@ -235,6 +235,31 @@ bot.onText(/\/dailyupdate/, async(msg)=>{
                 bot.sendMessage(chatId, "An error occured. Please try again");
     }
 })
+
+bot.onText(/\/hubstaff/, async (msg) => {
+    const chatId = msg.chat.id;
+
+    try {
+        // Step 1: Discover OpenID configuration
+        const config = await discoverOpenIDConfiguration(issuer);
+
+        // Step 2: Generate the authorization URL
+        const authUrl = getAuthorizationUrl(config, clientId, redirectUri, scopes);
+
+        
+        await bot.sendMessage(
+            chatId,
+            `To authenticate your Hubstaff account, please click the link below:\n\n[Authenticate with Hubstaff](${authUrl})`,
+            { parse_mode: "Markdown" }
+        );
+
+        
+        await bot.sendMessage(chatId, "After logging in, you will be redirected to the app and authenticated.");
+    } catch (error) {
+        console.error("Error handling /hubstaff command:", error.message);
+        await bot.sendMessage(chatId, "Sorry, something went wrong while initiating the authentication process.");
+    }
+});
 bot.onText(/\/leave/, async (msg) => {
     const chatId = msg.chat.id;
     const userId = msg.from.id;
