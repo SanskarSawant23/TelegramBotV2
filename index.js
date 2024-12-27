@@ -277,11 +277,13 @@ bot.onText(/\/leave/, async (msg) => {
                     });
                 }
 
+            bot.sendMessage(chatId, "You leave reason have been taken into consideration and you have been marked on leave.");
+
+
             }
         })
         
 
-        bot.sendMessage(chatId, "You leave reason have been taken into consideration and you have been marked on leave.");
     } catch (error) {
         console.error("Error updating leave status:", error.message);
         bot.sendMessage(chatId, "An error occurred while updating your leave status. Please try again.");
