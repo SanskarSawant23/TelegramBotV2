@@ -9,7 +9,7 @@ const prisma= new PrismaClient();
 const bot = new TelegramBot(token, {polling: true});
 const LockMessage = "<b> This command is inteded for group members only</b>";
 
-const groupId = "-1002455776773"
+const groupId = "933767902"
 
 const checkMember = async (chatId, userId)=>{
     try{
