@@ -18,6 +18,7 @@ model User {
   id         Int       @id @default(autoincrement())
   telegramId String    @unique
   leave      Boolean   @default(false)
+  leaveReason String? 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
@@ -54,3 +55,5 @@ model Task {
 
   user      User     @relation(fields: [userId], references: [id])
 }
+
+//make a table for leave and store the reasons why they are taking leave!

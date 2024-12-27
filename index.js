@@ -246,28 +246,42 @@ bot.onText(/\/leave/, async (msg) => {
     } 
 
     try {
+        bot.sendMessage(chatId, "Please type the reason for the leave!. To cancel, type /cancel.")
+        bot.once("message", async(msg)=>{
+            if(msg.from.id === userId){
+                if(msg.text === '/cancel'){
+                    bot.sendMessage(chatId, "Your Leave marking process has been canceled.");
+                    return;
+                }
+                const leavereason = msg.text;
+                let user = await prisma.user.findUnique({
+                    where: { telegramId: userId.toString() },
+                });
         
-        let user = await prisma.user.findUnique({
-            where: { telegramId: userId.toString() },
-        });
+                if (!user) {
+                    
+                    user = await prisma.user.create({
+                        data: {
+                            telegramId: userId.toString(),
+                            leave: true,
+                            leaveReason: leavereason
+                        },
+                    });
+                } else {
+                    
+                    user = await prisma.user.update({
+                        where: { telegramId: userId.toString() },
+                        data: { leave: true,
+                            leaveReason: leavereason
+                         },
+                    });
+                }
 
-        if (!user) {
-            
-            user = await prisma.user.create({
-                data: {
-                    telegramId: userId.toString(),
-                    leave: true,
-                },
-            });
-        } else {
-            
-            user = await prisma.user.update({
-                where: { telegramId: userId.toString() },
-                data: { leave: true },
-            });
-        }
+            }
+        })
+        
 
-        bot.sendMessage(chatId, "You have been marked as on leave.");
+        bot.sendMessage(chatId, "You leave reason have been taken into consideration and you have been marked on leave.");
     } catch (error) {
         console.error("Error updating leave status:", error.message);
         bot.sendMessage(chatId, "An error occurred while updating your leave status. Please try again.");
