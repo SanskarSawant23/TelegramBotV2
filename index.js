@@ -9,7 +9,7 @@ const prisma= new PrismaClient();
 const bot = new TelegramBot(token, {polling: true});
 const LockMessage = "<b> This command is inteded for group members only</b>";
 
-const groupId = "-1002455776773"
+const groupId = "933767902"
 
 const checkMember = async (chatId, userId)=>{
     try{
@@ -238,57 +238,77 @@ bot.onText(/\/dailyupdate/, async(msg)=>{
 bot.onText(/\/leave/, async (msg) => {
     const chatId = msg.chat.id;
     const userId = msg.from.id;
-    
-    const isMember = await checkMember(chatId, userId); 
+
+    // Check if the user is a member
+    const isMember = await checkMember(chatId, userId);
     if (!isMember) {
-        bot.sendMessage(chatId, LockMessage, {parse_mode:'HTML'})
+        bot.sendMessage(chatId, LockMessage, { parse_mode: 'HTML' });
         return;
-    } 
+    }
 
     try {
-        bot.sendMessage(chatId, "Please type the reason for the leave!. To cancel, type /cancel.")
-        bot.once("message", async(msg)=>{
-            if(msg.from.id === userId){
-                if(msg.text === '/cancel'){
-                    bot.sendMessage(chatId, "Your Leave marking process has been canceled.");
-                    return;
-                }
-                const leavereason = msg.text;
+       
+        bot.sendMessage(chatId, "Please type the reason for the leave! To cancel, type /cancel.");
+
+      
+        const listener = async (responseMsg) => {
+           
+            if (responseMsg.from.id !== userId) return;
+
+            const text = responseMsg.text;
+
+            
+            if (text === '/cancel') {
+                bot.sendMessage(chatId, "Your leave marking process has been canceled.");
+                bot.removeListener('message', listener); 
+                return;
+            }
+
+            const leaveReason = text;
+
+            // Update the database with the leave status and reason
+            try {
                 let user = await prisma.user.findUnique({
                     where: { telegramId: userId.toString() },
                 });
-        
+
                 if (!user) {
-                    
+                    // Create a new user if not found
                     user = await prisma.user.create({
                         data: {
                             telegramId: userId.toString(),
                             leave: true,
-                            leaveReason: leavereason
+                            leaveReason: leaveReason,
                         },
                     });
                 } else {
-                    
+                    // Update the existing user's leave status and reason
                     user = await prisma.user.update({
                         where: { telegramId: userId.toString() },
-                        data: { leave: true,
-                            leaveReason: leavereason
-                         },
+                        data: {
+                            leave: true,
+                            leaveReason: leaveReason,
+                        },
                     });
                 }
 
-            bot.sendMessage(chatId, "You leave reason have been taken into consideration and you have been marked on leave.");
-
-
+                bot.sendMessage(chatId, "Your leave reason has been recorded, and you have been marked on leave.");
+            } catch (dbError) {
+                console.error("Error updating leave status:", dbError.message);
+                bot.sendMessage(chatId, "An error occurred while updating your leave status. Please try again.");
             }
-        })
-        
+
+            bot.removeListener('message', listener); 
+        };
+
+        bot.on("message", listener); 
 
     } catch (error) {
-        console.error("Error updating leave status:", error.message);
-        bot.sendMessage(chatId, "An error occurred while updating your leave status. Please try again.");
+        console.error("Error handling leave command:", error.message);
+        bot.sendMessage(chatId, "An error occurred while processing your leave request. Please try again.");
     }
 });
+
  //bot.on listens for anykind of message.
 //we can't use bot.on method to catch the feedback after the user had executed /feedback command
 
