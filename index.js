@@ -9,7 +9,7 @@ const prisma= new PrismaClient();
 const bot = new TelegramBot(token, {polling: true});
 const LockMessage = "<b> This command is inteded for group members only</b>";
 
-const groupId = "-1002455776773"
+const groupId = "933767902"
 
 const checkMember = async (chatId, userId)=>{
     try{
@@ -247,20 +247,19 @@ bot.onText(/\/leave/, async (msg) => {
     }
 
     try {
-       
+        // Ask for leave reason
         bot.sendMessage(chatId, "Please type the reason for the leave! To cancel, type /cancel.");
 
-      
-        const listener = async (responseMsg) => {
-           
+        // Listen for the next message from the same user
+        bot.once("message", async (responseMsg) => {
+            // Ensure the response is from the same user
             if (responseMsg.from.id !== userId) return;
 
             const text = responseMsg.text;
 
-            
+            // Handle /cancel command
             if (text === '/cancel') {
                 bot.sendMessage(chatId, "Your leave marking process has been canceled.");
-                bot.removeListener('message', listener); 
                 return;
             }
 
@@ -274,7 +273,7 @@ bot.onText(/\/leave/, async (msg) => {
 
                 if (!user) {
                     // Create a new user if not found
-                    user = await prisma.user.create({
+                    await prisma.user.create({
                         data: {
                             telegramId: userId.toString(),
                             leave: true,
@@ -283,7 +282,7 @@ bot.onText(/\/leave/, async (msg) => {
                     });
                 } else {
                     // Update the existing user's leave status and reason
-                    user = await prisma.user.update({
+                    await prisma.user.update({
                         where: { telegramId: userId.toString() },
                         data: {
                             leave: true,
@@ -292,27 +291,15 @@ bot.onText(/\/leave/, async (msg) => {
                     });
                 }
 
-                bot.sendMessage(chatId, "Your leave reason has been recorded, and you have been marked on leave.");
+                bot.sendMessage(chatId, "✅Your leave reason has been recorded, and you have been marked on leave.");
             } catch (dbError) {
                 console.error("Error updating leave status:", dbError.message);
                 bot.sendMessage(chatId, "An error occurred while updating your leave status. Please try again.");
             }
-
-            bot.removeListener('message', listener); 
-        };
-
-        bot.on("message", listener); 
+        });
 
     } catch (error) {
         console.error("Error handling leave command:", error.message);
         bot.sendMessage(chatId, "An error occurred while processing your leave request. Please try again.");
     }
 });
-
- //bot.on listens for anykind of message.
-//we can't use bot.on method to catch the feedback after the user had executed /feedback command
-
-
-
-
-
