@@ -2,14 +2,19 @@ const TelegramBot = require('node-telegram-bot-api');
 const token = "7253153525:AAE78Ne_xHP0_kJVlWVpKRuVoeX01mmttsw"
 const {PrismaClient} = require('@prisma/client');
 const { check } = require('prisma');
+
 const prisma= new PrismaClient();
 
 
-
+const issuer = "https://account.hubstaff.com";
+const clientId = "lzFzi1Zxv1YNhWLcKQVodW_eL1nUustZvjyLwZukq0U";
+const redirectUri = "http://localhost:4000/callback";
+const client_secret = "fLaxNXpPSDjYYIf8YFmlmTR898o1nLedisVI3vFyiwn-bivTH8QritBjjsCqysO4a5mcRdholdD1S0a32n-imQ";
+const scope = "openid profile email";
 const bot = new TelegramBot(token, {polling: true});
 const LockMessage = "<b> This command is inteded for group members only</b>";
 
-const groupId = "933767902"
+const groupId = "-1002455776773"
 
 const checkMember = async (chatId, userId)=>{
     try{
@@ -157,6 +162,8 @@ bot.onText(/\/dailyupdate/, async(msg)=>{
     }
 })
 
+const scopes = "openid profile email";
+
 bot.onText(/\/hubstaff/, async (msg) => {
     const chatId = msg.chat.id;
 
@@ -270,11 +277,7 @@ async function discoverOpenIDConfiguration(issuerUrl) {
     }
 }
 
-const issuer = "https://account.hubstaff.com";
-const clientId = "lzFzi1Zxv1YNhWLcKQVodW_eL1nUustZvjyLwZukq0U";
-const redirectUri = "http://localhost:4000/callback";
-const client_secret = "fLaxNXpPSDjYYIf8YFmlmTR898o1nLedisVI3vFyiwn-bivTH8QritBjjsCqysO4a5mcRdholdD1S0a32n-imQ";
-const scope = "openid profile email";
+
 
 function generateNounce() {
     return Math.random().toString(36).substring(2);
