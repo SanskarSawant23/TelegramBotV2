@@ -212,7 +212,7 @@ bot.onText(/\/leave/, async (msg) => {
 
             const text = responseMsg.text.toLocaleLowerCase();
 
-            const healthReasons = ["stomach ache", "fever", "cold", "headache", "flu", "dizziness"];
+            const healthReasons = ["stomach","ache", "fever", "cold", "headache", "flu", "dizziness"];
          
             // Handle /cancel command
             if (text === '/cancel') {
