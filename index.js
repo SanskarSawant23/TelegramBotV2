@@ -45,6 +45,8 @@ bot.onText(/\/help/, (msg)=>{
       - <code>/leave</code> - Mark yourself as on leave
       - <code>/help</code> - Display this help message
       - <code>/feedback</code> - Used to give feedback
+      - <code>/hubstaff</code> - Authenticate your hubstaff account
+
 
       <i>Type any command to get started!</i>`;
     
@@ -208,15 +210,29 @@ bot.onText(/\/leave/, async (msg) => {
             // Ensure the response is from the same user
             if (responseMsg.from.id !== userId) return;
 
-            const text = responseMsg.text;
+            const text = responseMsg.text
 
+            const healthReasons = ["stomach ache", "fever", "cold", "headache", "flu", "dizziness"];
+         
             // Handle /cancel command
             if (text === '/cancel') {
                 bot.sendMessage(chatId, "Your leave marking process has been canceled.");
                 return;
             }
+            const leaveReason = responseMsg.text;
 
-            const leaveReason = text;
+            let responseMessage;
+            if (/emergency/i.test(text)) {
+                responseMessage = "🛑 Leave marked as Emergency. Take care!";
+            } else if (/exam/i.test(text)) {
+                responseMessage = "📚 Leave marked as Exam. Good luck with your studies!";
+            } else if (/personal/i.test(text)) {
+                responseMessage = "🌟 Leave marked as Personal. Hope everything goes well!";
+            } else if (healthReasons.some((reason) => text.includes(reason))) {
+                responseMessage = "🤒 Leave marked as Health-related. Please take care of your health!";
+            } else {
+                responseMessage = "✅ Leave reason recorded: " + text;
+            }
 
             // Update the database with the leave status and reason
             try {
@@ -244,7 +260,8 @@ bot.onText(/\/leave/, async (msg) => {
                     });
                 }
 
-                bot.sendMessage(chatId, "✅Your leave reason has been recorded, and you have been marked on leave.");
+                
+                bot.sendMessage(chatId, responseMessage);
             } catch (dbError) {
                 console.error("Error updating leave status:", dbError.message);
                 bot.sendMessage(chatId, "An error occurred while updating your leave status. Please try again.");
