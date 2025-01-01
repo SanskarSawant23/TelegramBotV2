@@ -210,7 +210,7 @@ bot.onText(/\/leave/, async (msg) => {
             // Ensure the response is from the same user
             if (responseMsg.from.id !== userId) return;
 
-            const text = responseMsg.text
+            const text = responseMsg.text.toLocaleLowerCase();
 
             const healthReasons = ["stomach ache", "fever", "cold", "headache", "flu", "dizziness"];
          
@@ -220,6 +220,7 @@ bot.onText(/\/leave/, async (msg) => {
                 return;
             }
             const leaveReason = responseMsg.text;
+            const leavedata = leaveReason.split("");
 
             let responseMessage;
             if (/emergency/i.test(text)) {
@@ -228,7 +229,7 @@ bot.onText(/\/leave/, async (msg) => {
                 responseMessage = "📚 Leave marked as Exam. Good luck with your studies!";
             } else if (/personal/i.test(text)) {
                 responseMessage = "🌟 Leave marked as Personal. Hope everything goes well!";
-            } else if (healthReasons.some((reason) => text.includes(reason))) {
+            } else if (healthReasons.some((reason) => leavedata.includes(reason))) {
                 responseMessage = "🤒 Leave marked as Health-related. Please take care of your health!";
             } else {
                 responseMessage = "✅ Leave reason recorded: " + text;
