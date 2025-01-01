@@ -45,6 +45,8 @@ bot.onText(/\/help/, (msg)=>{
       - <code>/leave</code> - Mark yourself as on leave
       - <code>/help</code> - Display this help message
       - <code>/feedback</code> - Used to give feedback
+      - <code>/hubstaff</code> - Authenticate you account using hubstaff
+
 
       <i>Type any command to get started!</i>`;
     
@@ -77,35 +79,35 @@ bot.onText(/\/feedback/, (msg)=>{
             }
             const feedbackmsg = msg.text;
 
-            try{
-                let user = await prisma.user.findUnique({
-                    where:{ telegramId: userId.toString()}
-                });
-                if(!user){
-                    user =await prisma.user.create({
-                        data:{
-                            telegramId: userId.toString(),
-                            leave:false,
-                            feedback:{
-                                create:[{feedback: feedbackmsg}]
-                            }
-                        }
-                    })
-                }else{
-                    await prisma.user.update({
-                        where:{telegramId: userId.toString()},
-                        data:{
-                            feedback:{
-                                create:[{feedback:feedbackmsg}]
-                            }
-                        }
-                    })
-                }
+            // try{
+            //     let user = await prisma.user.findUnique({
+            //         where:{ telegramId: userId.toString()}
+            //     });
+            //     if(!user){
+            //         user =await prisma.user.create({
+            //             data:{
+            //                 telegramId: userId.toString(),
+            //                 leave:false,
+            //                 feedback:{
+            //                     create:[{feedback: feedbackmsg}]
+            //                 }
+            //             }
+            //         })
+            //     }else{
+            //         await prisma.user.update({
+            //             where:{telegramId: userId.toString()},
+            //             data:{
+            //                 feedback:{
+            //                     create:[{feedback:feedbackmsg}]
+            //                 }
+            //             }
+            //         })
+            //     }
                 bot.sendMessage(chatId, "Thank you for your feedback!")
-            }catch(error){
-                console.error("Error saving feedback", error);
-                bot.sendMessage(chatId, "An error occured while saving you feedback. Please try again");
-            }
+            // }catch(error){
+            //     console.error("Error saving feedback", error);
+            //     bot.sendMessage(chatId, "An error occured while saving you feedback. Please try again");
+            // }
         }
         
     })
@@ -142,17 +144,17 @@ bot.onText(/\/dailyupdate/, async(msg)=>{
                 }
                 const dailyupdateText = msg.text;
 
-                try{
-                    await prisma.dailyUpdate.create({
-                        data:{
-                            userId: user.id,
-                            update: dailyupdateText
-                        }
-                    })
+                // try{
+                //     await prisma.dailyUpdate.create({
+                //         data:{
+                //             userId: user.id,
+                //             update: dailyupdateText
+                //         }
+                //     })
                     bot.sendMessage(chatId, "Your daily update has been saved. Thank you!");
-                }catch(error){
-                    bot.sendMessage(chatId, "An error occured while saving your update. Please try again")
-                }
+                // }catch(error){
+                //     bot.sendMessage(chatId, "An error occured while saving your update. Please try again")
+                // }
             }
         })
 
