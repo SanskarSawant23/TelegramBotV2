@@ -203,12 +203,19 @@ bot.onText(/\/leave/, async (msg) => {
 
     try {
         // Ask for leave reason
-        bot.sendMessage(chatId, "Please type the reason for the leave! To cancel, type /cancel.");
+        bot.sendMessage(
+            chatId,
+            `<b>${msg.from.first_name}</b>, please type the reason for the leave! To cancel, type /cancel.`,
+            { parse_mode: 'HTML' }
+        );
 
-        // Listen for the user's reply specifically
+        // Set up a custom listener
         const listener = async (responseMsg) => {
             // Ensure the response is from the same user and in the same chat
-            if (responseMsg.from.id !== userId || responseMsg.chat.id !== chatId) return;
+            if (
+                responseMsg.from.id !== userId || // Check user ID
+                responseMsg.chat.id !== chatId    // Check chat ID
+            ) return;
 
             const text = responseMsg.text;
 
@@ -221,10 +228,13 @@ bot.onText(/\/leave/, async (msg) => {
 
             const leaveReason = text;
 
-            // Update the database (simulated in this example)
+            // Simulate database update (you can uncomment and implement Prisma logic here)
             try {
-                // Example of updating the leave status
-                bot.sendMessage(chatId, "✅ Your leave reason has been recorded, and you have been marked on leave.");
+                bot.sendMessage(
+                    chatId,
+                    `✅ Your leave reason: "<b>${leaveReason}</b>" has been recorded, and you have been marked on leave.`,
+                    { parse_mode: 'HTML' }
+                );
             } catch (dbError) {
                 console.error("Error updating leave status:", dbError.message);
                 bot.sendMessage(chatId, "An error occurred while updating your leave status. Please try again.");
@@ -240,6 +250,7 @@ bot.onText(/\/leave/, async (msg) => {
         bot.sendMessage(chatId, "An error occurred while processing your leave request. Please try again.");
     }
 });
+
 
 // backend.js
 const express = require("express");
