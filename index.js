@@ -197,7 +197,7 @@ bot.onText(/\/leave/, async (msg) => {
     // Check if the user is a member
     const isMember = await checkMember(chatId, userId);
     if (!isMember) {
-        bot.sendMessage(chatId, LockMessage, { parse_mode: 'HTML' });
+        bot.sendMessage(chatId, "You are not allowed to use this command.", { parse_mode: 'HTML' });
         return;
     }
 
@@ -205,53 +205,35 @@ bot.onText(/\/leave/, async (msg) => {
         // Ask for leave reason
         bot.sendMessage(chatId, "Please type the reason for the leave! To cancel, type /cancel.");
 
-        // Listen for the next message from the same user
-        bot.once("message", async (responseMsg) => {
-            // Ensure the response is from the same user
-            if (responseMsg.from.id !== userId) return;
+        // Listen for the user's reply specifically
+        const listener = async (responseMsg) => {
+            // Ensure the response is from the same user and in the same chat
+            if (responseMsg.from.id !== userId || responseMsg.chat.id !== chatId) return;
 
             const text = responseMsg.text;
 
             // Handle /cancel command
             if (text === '/cancel') {
                 bot.sendMessage(chatId, "Your leave marking process has been canceled.");
+                bot.removeListener("message", listener); // Remove the listener once done
                 return;
             }
 
             const leaveReason = text;
 
-            // Update the database with the leave status and reason
-            // try {
-            //     let user = await prisma.user.findUnique({
-            //         where: { telegramId: userId.toString() },
-            //     });
+            // Update the database (simulated in this example)
+            try {
+                // Example of updating the leave status
+                bot.sendMessage(chatId, "✅ Your leave reason has been recorded, and you have been marked on leave.");
+            } catch (dbError) {
+                console.error("Error updating leave status:", dbError.message);
+                bot.sendMessage(chatId, "An error occurred while updating your leave status. Please try again.");
+            }
 
-            //     if (!user) {
-            //         // Create a new user if not found
-            //         await prisma.user.create({
-            //             data: {
-            //                 telegramId: userId.toString(),
-            //                 leave: true,
-            //                 leaveReason: leaveReason,
-            //             },
-            //         });
-            //     } else {
-            //         // Update the existing user's leave status and reason
-            //         await prisma.user.update({
-            //             where: { telegramId: userId.toString() },
-            //             data: {
-            //                 leave: true,
-            //                 leaveReason: leaveReason,
-            //             },
-            //         });
-            //     }
+            bot.removeListener("message", listener); // Remove the listener once done
+        };
 
-                bot.sendMessage(chatId, "✅Your leave reason has been recorded, and you have been marked on leave.");
-            // } catch (dbError) {
-            //     console.error("Error updating leave status:", dbError.message);
-            //     bot.sendMessage(chatId, "An error occurred while updating your leave status. Please try again.");
-            // }
-        });
+        bot.on("message", listener); // Attach the listener
 
     } catch (error) {
         console.error("Error handling leave command:", error.message);
