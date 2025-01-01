@@ -219,7 +219,7 @@ bot.onText(/\/leave/, async (msg) => {
                 bot.sendMessage(chatId, "Your leave marking process has been canceled.");
                 return;
             }
-            const leaveReason = responseMsg.text;
+            const leaveReason = responseMsg.text.toLocaleLowerCase();
             const leavedata = leaveReason.split(" ");
 
             let responseMessage;
