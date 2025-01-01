@@ -221,36 +221,36 @@ bot.onText(/\/leave/, async (msg) => {
             const leaveReason = text;
 
             // Update the database with the leave status and reason
-            try {
-                let user = await prisma.user.findUnique({
-                    where: { telegramId: userId.toString() },
-                });
+            // try {
+            //     let user = await prisma.user.findUnique({
+            //         where: { telegramId: userId.toString() },
+            //     });
 
-                if (!user) {
-                    // Create a new user if not found
-                    await prisma.user.create({
-                        data: {
-                            telegramId: userId.toString(),
-                            leave: true,
-                            leaveReason: leaveReason,
-                        },
-                    });
-                } else {
-                    // Update the existing user's leave status and reason
-                    await prisma.user.update({
-                        where: { telegramId: userId.toString() },
-                        data: {
-                            leave: true,
-                            leaveReason: leaveReason,
-                        },
-                    });
-                }
+            //     if (!user) {
+            //         // Create a new user if not found
+            //         await prisma.user.create({
+            //             data: {
+            //                 telegramId: userId.toString(),
+            //                 leave: true,
+            //                 leaveReason: leaveReason,
+            //             },
+            //         });
+            //     } else {
+            //         // Update the existing user's leave status and reason
+            //         await prisma.user.update({
+            //             where: { telegramId: userId.toString() },
+            //             data: {
+            //                 leave: true,
+            //                 leaveReason: leaveReason,
+            //             },
+            //         });
+            //     }
 
                 bot.sendMessage(chatId, "✅Your leave reason has been recorded, and you have been marked on leave.");
-            } catch (dbError) {
-                console.error("Error updating leave status:", dbError.message);
-                bot.sendMessage(chatId, "An error occurred while updating your leave status. Please try again.");
-            }
+            // } catch (dbError) {
+            //     console.error("Error updating leave status:", dbError.message);
+            //     bot.sendMessage(chatId, "An error occurred while updating your leave status. Please try again.");
+            // }
         });
 
     } catch (error) {
