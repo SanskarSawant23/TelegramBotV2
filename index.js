@@ -72,7 +72,7 @@ bot.onText(/\/feedback/, (msg)=>{
     }
     bot.sendMessage(chatId,"Please type your feedback. To cancel, Type /cancel");
     bot.once("message", async (msg)=>{
-        if(msg.from.id === userId){
+        
             if(msg.text === '/cancel'){
                 bot.sendMessage(chatId, "Feedback process canceled");
                 return;
@@ -108,7 +108,7 @@ bot.onText(/\/feedback/, (msg)=>{
                 console.error("Error saving feedback", error);
                 bot.sendMessage(chatId, "An error occured while saving you feedback. Please try again");
             }
-        }
+        
         
     })
 
@@ -137,7 +137,7 @@ bot.onText(/\/dailyupdate/, async(msg)=>{
         }
         bot.sendMessage(chatId, "Please type your daily update. To cancel, type /cancel.");
         bot.once("message", async (msg)=>{
-            if(msg.from.id == userId){
+           
                 if(msg.text === '/cancel'){
                     bot.sendMessage(chatId, "Daily update process Canceled");
                     return;
@@ -155,7 +155,7 @@ bot.onText(/\/dailyupdate/, async(msg)=>{
                 }catch(error){
                     bot.sendMessage(chatId, "An error occured while saving your update. Please try again")
                 }
-            }
+            
         })
 
 
