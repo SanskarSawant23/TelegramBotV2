@@ -14,21 +14,21 @@ const scope = "openid profile email";
 const bot = new TelegramBot(token, {polling: true});
 const LockMessage = "<b> This command is inteded for group members only</b>";
 
-const groupId = "-1002455776773"
+// const groupId = "-1002455776773"
 
-const checkMember = async (chatId, userId)=>{
-    try{
-        const chatMember = await bot.getChatMember(groupId, userId);
-        if(['member', 'administrator','creator'].includes(chatMember.status)){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }catch(error){
-        console.log("error checking membership", error);
-    }
-}
+// const checkMember = async (chatId, userId)=>{
+//     try{
+//         const chatMember = await bot.getChatMember(groupId, userId);
+//         if(['member', 'administrator','creator'].includes(chatMember.status)){
+//             return true;
+//         }
+//         else{
+//             return false;
+//         }
+//     }catch(error){
+//         console.log("error checking membership", error);
+//     }
+// }
 
 bot.on("message", (msg)=>{
     console.log(msg.chat);
@@ -65,11 +65,11 @@ bot.onText(/\/start/, (msg)=>{
 bot.onText(/\/feedback/, (msg)=>{
     const chatId = msg.chat.id;
     const userId = msg.from.id;
-    const member = checkMember(chatId, userId);
-    if(!member){
-        bot.sendMessage(chatId, LockMessage, {parse_mode:"HTML"});
-        return;
-    }
+    // const member = checkMember(chatId, userId);
+    // if(!member){
+    //     bot.sendMessage(chatId, LockMessage, {parse_mode:"HTML"});
+    //     return;
+    // }
     bot.sendMessage(chatId,"Please type your feedback. To cancel, Type /cancel");
     bot.once("message", async (msg)=>{
         
@@ -121,10 +121,10 @@ bot.onText(/\/dailyupdate/, async(msg)=>{
     const userId = msg.from.id;
     const isMember = await checkMember(chatId, userId);
 
-    if(!isMember){
-        bot.sendMessage(chatId, LockMessage, {parse_mode:"HTML"})
-        return;
-    }
+    // if(!isMember){
+    //     bot.sendMessage(chatId, LockMessage, {parse_mode:"HTML"})
+    //     return;
+    // }
     
     try{
         let user = await prisma.user.findUnique({
@@ -195,11 +195,11 @@ bot.onText(/\/leave/, async (msg) => {
     const userId = msg.from.id;
 
     // Check if the user is a member
-    const isMember = await checkMember(chatId, userId);
-    if (!isMember) {
-        bot.sendMessage(chatId, LockMessage, { parse_mode: 'HTML' });
-        return;
-    }
+    // const isMember = await checkMember(chatId, userId);
+    // if (!isMember) {
+    //     bot.sendMessage(chatId, LockMessage, { parse_mode: 'HTML' });
+    //     return;
+    // }
 
     try {
         // Ask for leave reason
