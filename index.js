@@ -144,17 +144,17 @@ bot.onText(/\/dailyupdate/, async(msg)=>{
                 }
                 const dailyupdateText = msg.text;
 
-                // try{
-                //     await prisma.dailyUpdate.create({
-                //         data:{
-                //             userId: user.id,
-                //             update: dailyupdateText
-                //         }
-                //     })
+                try{
+                    await prisma.dailyUpdate.create({
+                        data:{
+                            userId: user.id,
+                            update: dailyupdateText
+                        }
+                    })
                     bot.sendMessage(chatId, "Your daily update has been saved. Thank you!");
-                // }catch(error){
-                //     bot.sendMessage(chatId, "An error occured while saving your update. Please try again")
-                // }
+                }catch(error){
+                    bot.sendMessage(chatId, "An error occured while saving your update. Please try again")
+                }
             }
         })
 
@@ -197,60 +197,67 @@ bot.onText(/\/leave/, async (msg) => {
     // Check if the user is a member
     const isMember = await checkMember(chatId, userId);
     if (!isMember) {
-        bot.sendMessage(chatId, "You are not allowed to use this command.", { parse_mode: 'HTML' });
+        bot.sendMessage(chatId, LockMessage, { parse_mode: 'HTML' });
         return;
     }
 
     try {
         // Ask for leave reason
-        bot.sendMessage(
-            chatId,
-            `<b>${msg.from.first_name}</b>, please type the reason for the leave! To cancel, type /cancel.`,
-            { parse_mode: 'HTML' }
-        );
+        bot.sendMessage(chatId, "Please type the reason for the leave! To cancel, type /cancel.");
 
-        // Set up a custom listener
-        const listener = async (responseMsg) => {
-            // Ensure the response is from the same user and in the same chat
-            if (
-                responseMsg.from.id !== userId || // Check user ID
-                responseMsg.chat.id !== chatId    // Check chat ID
-            ) return;
+        // Listen for the next message from the same user
+        bot.once("message", async (responseMsg) => {
+            // Ensure the response is from the same user
+            if (responseMsg.from.id !== userId) return;
 
             const text = responseMsg.text;
 
             // Handle /cancel command
             if (text === '/cancel') {
                 bot.sendMessage(chatId, "Your leave marking process has been canceled.");
-                bot.removeListener("message", listener); // Remove the listener once done
                 return;
             }
 
             const leaveReason = text;
 
-            // Simulate database update (you can uncomment and implement Prisma logic here)
+            // Update the database with the leave status and reason
             try {
-                bot.sendMessage(
-                    chatId,
-                    `✅ Your leave reason: "<b>${leaveReason}</b>" has been recorded, and you have been marked on leave.`,
-                    { parse_mode: 'HTML' }
-                );
+                let user = await prisma.user.findUnique({
+                    where: { telegramId: userId.toString() },
+                });
+
+                if (!user) {
+                    // Create a new user if not found
+                    await prisma.user.create({
+                        data: {
+                            telegramId: userId.toString(),
+                            leave: true,
+                            leaveReason: leaveReason,
+                        },
+                    });
+                } else {
+                    // Update the existing user's leave status and reason
+                    await prisma.user.update({
+                        where: { telegramId: userId.toString() },
+                        data: {
+                            leave: true,
+                            leaveReason: leaveReason,
+                        },
+                    });
+                }
+
+                bot.sendMessage(chatId, "✅Your leave reason has been recorded, and you have been marked on leave.");
             } catch (dbError) {
                 console.error("Error updating leave status:", dbError.message);
                 bot.sendMessage(chatId, "An error occurred while updating your leave status. Please try again.");
             }
-
-            bot.removeListener("message", listener); // Remove the listener once done
-        };
-
-        bot.on("message", listener); // Attach the listener
+        });
 
     } catch (error) {
         console.error("Error handling leave command:", error.message);
         bot.sendMessage(chatId, "An error occurred while processing your leave request. Please try again.");
     }
 });
-
 
 // backend.js
 const express = require("express");
