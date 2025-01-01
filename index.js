@@ -119,7 +119,7 @@ bot.onText(/\/feedback/, (msg)=>{
 bot.onText(/\/dailyupdate/, async(msg)=>{
     const chatId = msg.chat.id;
     const userId = msg.from.id;
-    const isMember = await checkMember(chatId, userId);
+    // const isMember = await checkMember(chatId, userId);
 
     // if(!isMember){
     //     bot.sendMessage(chatId, LockMessage, {parse_mode:"HTML"})
