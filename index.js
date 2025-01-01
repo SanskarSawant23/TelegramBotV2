@@ -220,7 +220,7 @@ bot.onText(/\/leave/, async (msg) => {
                 return;
             }
             const leaveReason = responseMsg.text;
-            const leavedata = leaveReason.split("");
+            const leavedata = leaveReason.split(" ");
 
             let responseMessage;
             if (/emergency/i.test(text)) {
