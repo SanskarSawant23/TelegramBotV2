@@ -40,12 +40,12 @@ bot.onText(/\/help/, (msg)=>{
       <b>👋 Welcome to PV Operations Bot!</b>
       <i>Here are the available commands:</i>
       
-      - <code>/start</code> - Displays the start message
-      - <code>/dailyupdate</code> - Submit your daily update
-      - <code>/leave</code> - Mark yourself as on leave
-      - <code>/help</code> - Display this help message
-      - <code>/hubstaff</code> - Authenticate your hubstaff account
-      - <code>/feedback</code> - Give feedback
+    - <a href="tg://bot_command?command=/start">/start</a> -<i> Displays the start message</i>
+    - <a href="tg://bot_command?command=/dailyupdate">/dailyupdate</a> - <i>Submit your daily update</i>
+    - <a href="tg://bot_command?command=/leave">/leave</a> - <i>Mark yourself as on leave</i>
+    - <a href="tg://bot_command?command=/help">/help</a> -<i> Display this help message</i>
+    - <a href="tg://bot_command?command=/feedback">/feedback</a> - <i>Used to give feedback</i>
+    - <a href="tg://bot_command?command=/hubstaff">/hubstaff</a> - <i>Authenticate your Hubstaff account</i>
       
       <i>Type any command to get started!</i>`;
       
