@@ -2,7 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const token = "7253153525:AAE78Ne_xHP0_kJVlWVpKRuVoeX01mmttsw"
 const {PrismaClient} = require('@prisma/client');
 const { check } = require('prisma');
-import { discoverOpenIDConfiguration, getAuthorizationUrl, getMyProfile} from './backend';
+//import { discoverOpenIDConfiguration, getAuthorizationUrl, getMyProfile} from './backend';
 
 const prisma= new PrismaClient();
 
