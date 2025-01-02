@@ -39,13 +39,12 @@ bot.onText(/\/help/, (msg)=>{
       const message = `
       <b>👋 Welcome to PV Operations Bot!</b>
       <i>Here are the available commands:</i>
-      
-        🔹 /start - Displays the start message  
-        🔹 /dailyupdate - Submit your daily update  
-        🔹 /leave - Mark yourself as on leave  
-        🔹 /help - Display this help message  
-        🔹 /hubstaff - Authenticate your Hubstaff account  
-        🔹 /feedback - Provide feedback 
+      🔹/start - Displays the start message  
+      🔹/dailyupdate - Submit your daily update  
+      🔹/leave - Mark yourself as on leave  
+      🔹/help - Display this help message  
+      🔹/hubstaff - Authenticate your Hubstaff account  
+      🔹/feedback - Provide feedback 
       
       <i>Type any command to get started!</i>`;
       
