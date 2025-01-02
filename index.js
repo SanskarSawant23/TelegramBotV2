@@ -38,20 +38,34 @@ bot.onText(/\/help/, (msg)=>{
       const chatId = msg.chat.id;
       const message = `
       <b>👋 Welcome to PV Operations Bot!</b>
-<i>Here are the available commands:</i>
-
-- <code>/start</code> - Displays the start message
-- <code>/dailyupdate</code> - Submit your daily update
-- <code>/leave</code> - Mark yourself as on leave
-- <code>/help</code> - Display this help message
-- <code>/hubstaff</code> - Authenticate your hubstaff account
-- <code>/feedback</code> - Give feedback
-
-<i>Type any command to get started!</i>`;
-
-    bot.sendMessage(chatId, message, {parse_mode:'HTML'});
+      <i>Here are the available commands:</i>
       
-    
+      - <code>/start</code> - Displays the start message
+      - <code>/dailyupdate</code> - Submit your daily update
+      - <code>/leave</code> - Mark yourself as on leave
+      - <code>/help</code> - Display this help message
+      - <code>/hubstaff</code> - Authenticate your hubstaff account
+      - <code>/feedback</code> - Give feedback
+      
+      <i>Type any command to get started!</i>`;
+      
+          bot.sendMessage(chatId, message, {
+              parse_mode: 'HTML',
+              reply_markup: {
+                  keyboard: [
+                      ['/start', '/help'],
+                      ['/dailyupdate', '/leave'],
+                      ['/hubstaff', '/stats'],
+                      ['/addtask', '/listtask'],
+                      ['/feedback']
+                  ],
+                  resize_keyboard: true
+              }
+          });
+      });
+      bot.onText(/\/start/, (msg)=>{
+          const message = "👋<b> Welcome to the PV Operations Bot!</b>🔹 Need assistance? Simply type /help to see all available commands."
+         bot.sendMessage(msg.chat.id, message, {parse_mode:"HTML"});
       
 })
 
