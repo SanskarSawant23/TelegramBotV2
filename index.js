@@ -40,12 +40,12 @@ bot.onText(/\/help/, (msg)=>{
       <b>👋 Welcome to PV Operations Bot!</b>
       <i>Here are the available commands:</i>
       
-    - <a href="tg://bot_command?command=/start">/start</a> -<i> Displays the start message</i>
-    - <a href="tg://bot_command?command=/dailyupdate">/dailyupdate</a> - <i>Submit your daily update</i>
-    - <a href="tg://bot_command?command=/leave">/leave</a> - <i>Mark yourself as on leave</i>
-    - <a href="tg://bot_command?command=/help">/help</a> -<i> Display this help message</i>
-    - <a href="tg://bot_command?command=/feedback">/feedback</a> - <i>Used to give feedback</i>
-    - <a href="tg://bot_command?command=/hubstaff">/hubstaff</a> - <i>Authenticate your Hubstaff account</i>
+        🔹 /start - Displays the start message  
+        🔹 /dailyupdate - Submit your daily update  
+        🔹 /leave - Mark yourself as on leave  
+        🔹 /help - Display this help message  
+        🔹 /hubstaff - Authenticate your Hubstaff account  
+        🔹 /feedback - Provide feedback 
       
       <i>Type any command to get started!</i>`;
       
@@ -63,20 +63,9 @@ bot.onText(/\/help/, (msg)=>{
               }
           });
       });
-      bot.onText(/\/start/, (msg)=>{
-          const message = "👋<b> Welcome to the PV Operations Bot!</b>🔹 Need assistance? Simply type /help to see all available commands."
-         bot.sendMessage(msg.chat.id, message, {parse_mode:"HTML"});
       
-})
 
 
-bot.onText(/\/start/, (msg)=>{
-    const chatId = msg.chat.id;
-    const message = "👋<b> Welcome to the PV Operations Bot!</b> \n🔹 Need assistance? Simply type /help to see all available commands."
-    
-    bot.sendMessage(chatId, message, {parse_mode:"HTML"})
-
-})
 
 bot.onText(/\/feedback/, (msg)=>{
     const chatId = msg.chat.id;
