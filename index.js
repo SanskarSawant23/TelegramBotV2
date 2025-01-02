@@ -38,19 +38,26 @@ bot.onText(/\/help/, (msg)=>{
       const chatId = msg.chat.id;
       const message = `
       <b>👋 Welcome to PV Operations Bot!</b>
-      <i>Here are the available commands:</i>
+      <i>Here are the available commands:</i>`
+        
+        const options = {
+        reply_markup: {
+        inline_keyboard: [
+            [{ text: "Start", callback_data: "/start" }],
+            [{ text: "Submit Daily Update", callback_data: "/dailyupdate" }],
+            [{ text: "Mark Leave", callback_data: "/leave" }],
+            [{ text: "Help", callback_data: "/help" }],
+            [{ text: "Give Feedback", callback_data: "/feedback" }],
+            [{ text: "Authenticate Hubstaff", callback_data: "/hubstaff" }],
+        ],
+        },
+        parse_mode: "HTML",
+    };
 
-      - <code>/start</code> - Displays the start message
-      - <code>/dailyupdate</code> - Submit your daily update
-      - <code>/leave</code> - Mark yourself as on leave
-      - <code>/help</code> - Display this help message
-      - <code>/feedback</code> - Used to give feedback
-      - <code>/hubstaff</code> - Authenticate your hubstaff account
-
-
-      <i>Type any command to get started!</i>`;
+    bot.sendMessage(chatId, message, options);
+      
     
-      bot.sendMessage( chatId, message, {parse_mode:"HTML"});
+      
 })
 
 
