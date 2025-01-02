@@ -35,6 +35,11 @@ bot.on("message", (msg)=>{
     console.log(msg.chat);
 })
 
+bot.onText(/\/start/, (msg)=>{
+    const chatId = msg.chat.id;
+    const message = `<b>👋 Welcome to the PV Operations Bot!</b>  🔹 Need assistance? Simply type /help to see all available commands. `
+})
+
 bot.onText(/\/help/, (msg)=>{
       const chatId = msg.chat.id;
       const message = `
