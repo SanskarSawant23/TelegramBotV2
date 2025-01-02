@@ -49,7 +49,7 @@ bot.onText(/\/help/, (msg)=>{
 
 <i>Type any command to get started!</i>`;
 
-    bot.sendMessage(chatId, message, {parseMode:'HTML'});
+    bot.sendMessage(chatId, message, {parse_mode:'HTML'});
       
     
       
