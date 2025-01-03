@@ -65,6 +65,7 @@ router.get('/callback', async (req, res) => {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
         const tokens = response.data;
+        res.json("Authencation successfull");
         res.json(tokens);
     } catch (error) {
         console.error("Error exchanging code for tokens", error.message);
@@ -98,3 +99,7 @@ module.exports = {
     getAuthorizationUrl,
     getMyProfile
 };
+
+
+
+
