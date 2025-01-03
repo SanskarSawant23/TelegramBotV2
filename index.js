@@ -9,7 +9,7 @@ const prisma= new PrismaClient();
 
 const issuer = "https://account.hubstaff.com";
 const clientId = "lzFzi1Zxv1YNhWLcKQVodW_eL1nUustZvjyLwZukq0U";
-const redirectUri = "https://ee00-103-157-230-17.ngrok-free.app/callback";
+const redirectUri = "https://67d4-103-157-230-17.ngrok-free.app/callback";
 const client_secret = "fLaxNXpPSDjYYIf8YFmlmTR898o1nLedisVI3vFyiwn-bivTH8QritBjjsCqysO4a5mcRdholdD1S0a32n-imQ";
 const scope = "openid profile email";
 const bot = new TelegramBot(token, {polling: true});
@@ -44,7 +44,7 @@ bot.onText(/\/start/, (msg)=>{
 bot.onText(/\/help/, (msg)=>{
       const chatId = msg.chat.id;
       const message = `
-      <b>👋 Welcome to PV Operations Bot!</b>
+      👋 Welcome to PV Operations Bot!
       <i>Here are the available commands:</i>
       🔹/start - Displays the start message  
       🔹/dailyupdate - Submit your daily update  
