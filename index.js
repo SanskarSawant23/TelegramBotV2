@@ -143,8 +143,11 @@ bot.onText(/\/dailyupdate/, async(msg)=>{
 
         })
         if(!user){
-            bot.sendMessage(chatId, "You are not registered yet. Please use the bot and try again");
-            return;
+            user = await prisma.user.create({
+                data:{
+                    telegramId: userId.toString(),
+                }
+            })
         }
         bot.sendMessage(chatId, "Please type your daily update. To cancel, type /cancel.");
         bot.once("message", async (msg)=>{
