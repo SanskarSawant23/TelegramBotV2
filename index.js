@@ -38,7 +38,7 @@ bot.on("message", (msg)=>{
 bot.onText(/\/start/, (msg)=>{
     const chatId = msg.chat.id;
     const message = `<b>👋 Welcome to the PV Operations Bot!</b>  🔹 Need assistance? Simply type /help to see all available commands. `
-    bot.sendMessage(chatId, message);
+    bot.sendMessage(chatId, message, {parse_mode:"HTML"});
 })
 
 bot.onText(/\/help/, (msg)=>{
@@ -350,10 +350,12 @@ router.get('/callback', async (req, res) => {
         });
         const tokens = response.data;
         res.json(tokens);
+        res.send("Authentication successfull")
     } catch (error) {
         console.error("Error exchanging code for tokens", error.message);
         res.status(500).send("Error during token exchange");
     }
+
 });
 
 async function getMyProfile(accessToken) {
