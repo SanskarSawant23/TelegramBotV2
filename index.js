@@ -352,8 +352,12 @@ router.get('/callback', async (req, res) => {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
         const tokens = response.data;
-        res.json(tokens);
-        res.send("Authentication successfull")
+        res.json({
+            Authenrication: "successfull",
+            Token: tokens
+
+        })
+        
     } catch (error) {
         console.error("Error exchanging code for tokens", error.message);
         res.status(500).send("Error during token exchange");
